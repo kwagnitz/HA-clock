@@ -1,0 +1,35 @@
+kiosk_mode:
+  hide_header: '[[[ user_name === "Clock" ]]]'
+  hide_sidebar: '{{ is_state("input_boolean.hide_sidebar", "on") }}'
+views:
+  - type: panel
+    subview: true
+    theme: Blackout
+    cards:
+      - type: custom:html-template-card
+        title: null
+        content: >
+          <div style="padding:0px; line-height:1; text-align:center;"> {% set
+          rad = states('sensor.ws2900_solar_radiation') | int(0) %} <div
+          style="container-type:inline-size; line-height:1; text-align:center;
+          color:{{ '#800000' if rad < 2 }};"> <table width="100%"
+          cell-padding="0"> <tr><td
+          style="font-size:6rem">In:<br>{{states('sensor.ws2900_indoor_temperature')}}°C
+          {{ states('sensor.ws2900_indoor_humidity') }}%</td>
+
+          <td cell-spacing="0"><span
+          style="font-size:18rem;">{{now().strftime('%H:%M')}}</span> <span
+          style="font-size:6rem;">{{ now().strftime('%a %d %b') }}</span></td>
+
+          <td style="font-size: 6rem">Out:<br>{{
+          states('sensor.ws2900_outdoor_temperature') }}°C {{
+          states('sensor.ws2900_humidity') }}%</td></tr></table>
+
+          <span style="font-size:4rem;">Rain day:
+          {{states('sensor.ws2900_daily_rain')}}mm, Rain week:
+          {{states('sensor.ws2900_weekly_rain') }}mm
+
+          Rad: {{ rad }} w/m<sup>2</sup>, Batt:
+          {{states('sensor.goodwe_battery_state_of_charge')}}%, Load:
+          {{states('sensor.goodwe_battery_power') }}w</span> </div></div>
+
